@@ -13,19 +13,18 @@ from models import JobApplication
 app = FastAPI(title="Job Application Tracker")
 
 
-
-# CORS configuration for the frontend
+# CORS configuration for local and deployed frontends
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:5500",
         "http://localhost:5500",
+        "https://job-application-tracker-1-q98m.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 # Create the database table
