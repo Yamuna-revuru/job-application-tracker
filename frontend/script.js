@@ -5,7 +5,7 @@
 // Job Application Tracker
 // ========================================
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://job-application-tracker-1lpt.onrender.com";
 const PAGE_SIZE = 10;
 
 let applications = [];
