@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">CAREER DASHBOARD</p>
+            <h1>Job Application Tracker</h1>
+            <p class="subtitle">Manage applications and track your progress.</p>
+        </div>
+        <button id="addApplicationBtn" class="primary-button" type="button">
+            + Add Application
+        </button>
+    </header>
+
+    <!-- Messages -->
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <!-- Statistics -->
+    <section class="stats-grid" aria-label="Application statistics">
+        <article class="stat-card">
+            <p>Total Applications</p>
+            <h2 id="totalApplications">0</h2>
+        </article>
+        <article class="stat-card">
+            <p>Applied</p>
+            <h2 id="appliedCount">0</h2>
+        </article>
+        <article class="stat-card">
+            <p>Interviews</p>
+            <h2 id="interviewCount">0</h2>
+        </article>
+        <article class="stat-card">
+            <p>Rejected</p>
+            <h2 id="rejectedCount">0</h2>
+        </article>
+        <article class="stat-card">
+            <p>Offers</p>
+            <h2 id="offerCount">0</h2>
+        </article>
+    </section>
+
+    <!-- Follow-Up Reminders -->
+    <section class="analytics-section" id="followUpRemindersSection">
+        <div class="section-heading">
+            <div>
+                <h2>Follow-Up Reminders</h2>
+                <p>Keep track of overdue and upcoming follow-ups.</p>
+            </div>
+        </div>
+
+        <div class="rate-grid">
+            <article class="rate-card">
+                <p>Overdue Follow-Ups</p>
+                <h3 id="overdueReminderCount">0</h3>
+                <div id="overdueReminders">
+                    <p>No overdue follow-ups.</p>
+                </div>
+            </article>
+
+            <article class="rate-card">
+                <p>Upcoming Follow-Ups (Next 7 Days)</p>
+                <h3 id="upcomingReminderCount">0</h3>
+                <div id="upcomingReminders">
+                    <p>No upcoming follow-ups.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Dashboard Analytics -->
+    <section class="analytics-section">
+        <div class="section-heading">
+            <div>
+                <h2>Dashboard Analytics</h2>
+                <p>Understand your job application progress.</p>
+            </div>
+        </div>
+
+        <div class="analytics-grid">
+            <article class="chart-card">
+                <h3>Applications by Status</h3>
+                <div class="chart-container">
+                    <canvas id="statusChart" role="img"
+                        aria-label="Chart showing applications by status"></canvas>
+                </div>
+            </article>
+
+            <article class="chart-card">
+                <h3>Top Companies</h3>
+                <div class="chart-container">
+                    <canvas id="companyChart" role="img"
+                        aria-label="Chart showing application counts by company"></canvas>
+                </div>
+            </article>
+
+            <article class="chart-card chart-card-wide">
+                <h3>Application Activity</h3>
+                <div class="chart-container activity-chart">
+                    <canvas id="activityChart" role="img"
+                        aria-label="Chart showing applications by application date"></canvas>
+                </div>
+            </article>
+        </div>
+
+        <!-- Interview and Offer Rates -->
+        <div class="rate-grid">
+            <article class="rate-card">
+                <p>Interview Rate</p>
+                <h3 id="interviewRate">0%</h3>
+                <span>Applications currently in Interview status</span>
+            </article>
+
+            <article class="rate-card">
+                <p>Offer Rate</p>
+                <h3 id="offerRate">0%</h3>
+                <span>Applications currently in Offer status</span>
+            </article>
+        </div>
+    </section>
+
+    <!-- Add/Edit Application Form -->
+    <section id="applicationFormSection" class="form-section hidden">
+        <div class="section-heading">
+            <div>
+                <h2 id="formHeading">Add Application</h2>
+                <p>Enter your application details.</p>
+            </div>
+        </div>
+
+        <form id="applicationForm">
+            <input type="hidden" id="applicationId">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input id="companyName" name="company_name" type="text"
+                        placeholder="e.g. Infosys" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobTitle">Job Title *</label>
+                    <input id="jobTitle" name="job_title" type="text"
+                        placeholder="e.g. Python Developer" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="applicationDate">Application Date *</label>
+                    <input id="applicationDate" name="application_date"
+                        type="date" required>
+                </div>
+
+                <!-- New Follow-Up Date Field -->
+                <div class="form-group">
+                    <label for="followUpDate">Follow-Up Date (Optional)</label>
+                    <input id="followUpDate" name="follow_up_date" type="date">
+                </div>
+
+                <div class="form-group">
+                    <label for="applicationStatus">Status *</label>
+                    <select id="applicationStatus" name="status" required>
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Offer">Offer</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="3"
+                        placeholder="Interview details or follow-up notes"></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button id="saveApplicationBtn" class="primary-button" type="submit">
+                    Save Application
+                </button>
+                <button id="cancelBtn" class="secondary-button" type="button">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Applications Table -->
+    <section class="applications-section">
+        <div class="section-heading">
+            <div>
+                <h2>Your Applications</h2>
+                <p id="resultsSummary">Loading applications...</p>
+            </div>
+        </div>
+
+        <!-- Search, Filter, Sort and Export -->
+        <div class="filters">
+            <div class="filter-field">
+                <label for="searchInput">Search</label>
+                <input id="searchInput" type="search"
+                    placeholder="Company or job title...">
+            </div>
+
+            <div class="filter-field">
+                <label for="statusFilter">Filter by Status</label>
+                <select id="statusFilter">
+                    <option value="All">All Statuses</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Offer">Offer</option>
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="sortBy">Sort By</label>
+                <select id="sortBy">
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="company">Company name (A–Z)</option>
+                </select>
+            </div>
+
+            <button id="clearFiltersBtn" class="secondary-button" type="button">
+                Clear Filters
+            </button>
+
+            <button id="exportCsvBtn" class="primary-button" type="button">
+                ↓ Download CSV
+            </button>
+        </div>
+
+        <!-- Applications Table -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Job Title</th>
+                        <th>Application Date</th>
+                        <th>Status</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="applicationsTableBody">
+                    <tr>
+                        <td colspan="6" class="empty-cell">
+                            Loading applications...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationControls" class="pagination-controls">
+            <button id="previousPage" class="pagination-button"
+                type="button" disabled>
+                ← Previous
+            </button>
+
+            <span id="pageInfo">Page 1 of 1</span>
+
+            <button id="nextPage" class="pagination-button"
+                type="button" disabled>
+                Next →
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        Job Application Tracker
+    </footer>
+
+</div>
+</body>
+</html>
