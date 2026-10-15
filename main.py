@@ -13,6 +13,7 @@ from models import JobApplication
 app = FastAPI(title="Job Application Tracker")
 
 
+
 # CORS configuration for the frontend
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +25,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # Create the database table
